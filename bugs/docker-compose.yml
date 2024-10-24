@@ -1,12 +1,12 @@
 version: '3.4'
 
 services:
-  dima.Web:
-    build:
-      context: .
-      dockerfile: Dima.Web/Dockerfile
-    ports:
-      - "5000:80"
+  # dima.Web:
+  #   build:
+  #     context: .
+  #     dockerfile: Dima.Web/Dockerfile
+  #   ports:
+  #     - "5000:80"
   dima.api:
     build:
       context: .

@@ -1,6 +1,6 @@
 # Etapa 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /src
+WORKDIR /
 
 # Copiar os arquivos de projeto e restaurar as dependências
 COPY ["Dima.Web/Dima.Web.csproj", "Dima.Web/"]
