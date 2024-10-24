@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  dima.Web:
+    build:
+      context: .
+      dockerfile: Dima.Web/Dockerfile
+    ports:
+      - "5000:80"
+  dima.api:
+    build:
+      context: .
+      dockerfile: Dima.Api/Dockerfile
+    image: dimaapi
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=Dima-db;User=sa;Password=Saadmin32@#$;TrustServerCertificate=True;
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "Saadmin32@#$"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - datadima:/var/opt/mssql
+
+volumes:
+  datadima:
