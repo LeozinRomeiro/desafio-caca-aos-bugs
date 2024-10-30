@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  # dima.Web:
+  # dima.web:
   #   build:
   #     context: .
   #     dockerfile: Dima.Web/Dockerfile

@@ -20,7 +20,9 @@ public static class BuilderExtension
                 .GetConnectionString("DefaultConnection")
             ?? string.Empty;
         Configuration.BackendUrl = builder.Configuration.GetValue<string>("BackendUrl") ?? string.Empty;
+        Configuration.BackendUrlHttps = builder.Configuration.GetValue<string>("BackendUrlHttps") ?? string.Empty;
         Configuration.FrontendUrl = builder.Configuration.GetValue<string>("FrontendUrl") ?? string.Empty;
+        Configuration.FrontendUrlHttps = builder.Configuration.GetValue<string>("FrontendUrlHttps") ?? string.Empty;
         ApiConfiguration.StripeApiKey = builder.Configuration.GetValue<string>("StripeApiKey") ?? string.Empty;
 
         StripeConfiguration.ApiKey = ApiConfiguration.StripeApiKey;
@@ -37,6 +39,12 @@ public static class BuilderExtension
         builder.Services
             .AddAuthentication(IdentityConstants.ApplicationScheme)
             .AddIdentityCookies();
+
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            options.Cookie.SameSite = SameSiteMode.None;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        });
 
         builder.Services.AddAuthorization();
     }
@@ -60,10 +68,12 @@ public static class BuilderExtension
             options => options.AddPolicy(
                 ApiConfiguration.CorsPolicyName,
                 policy => policy
-                    .WithOrigins([
+                    .WithOrigins(
                         Configuration.BackendUrl,
-                        Configuration.FrontendUrl
-                    ])
+                        Configuration.BackendUrlHttps,
+                        Configuration.FrontendUrl,
+                        Configuration.FrontendUrlHttps
+                    )
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials()
